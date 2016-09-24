@@ -61,17 +61,18 @@
   function asTabs(node) {
     // my code below
     var tabNodes = [];
-    for (var i = 0; i < node.childNodes.length; i++) {
-      if (node.childNodes[i].nodeType == document.ELEMENT_NODE) {
-        tabNodes.push(node.childNodes[i]);
+    var children = node.childNodes
+    for (var i = 0; i < children.length; i++) {
+      if (children[i].nodeType == document.ELEMENT_NODE) {
+        tabNodes.push(children[i]);
       }
     }
 
     var tabButtons = document.createElement("div");
     tabNodes.forEach(function(tab, i) {
       var button = document.createElement("button");
-      attribute = tab.getAttribute("data-tabname");
-      text = document.createTextNode(attribute);
+      var attribute = tab.getAttribute("data-tabname");
+      var text = document.createTextNode(attribute);
       button.appendChild(text);
       tabButtons.appendChild(button);
       button.addEventListener("click", function() { selectTab(i) } );
@@ -79,6 +80,7 @@
     node.insertBefore(tabButtons, node.firstChild);
 
     function selectTab(selectedTab) {
+
       tabNodes.forEach(function(tab, i) {
         // for this, I originally changed the 'visibility' CSS attribute, but that left the individual
         // div elements on their respectives lines. I had to use the 'display' option, as the author does,
@@ -90,9 +92,17 @@
           tab.style.display = "none";
         };
       });
+
+      tabButtons.childNodes.forEach(function(button, i) {
+        if (i === selectedTab) {
+          button.style.background = "yellow";
+        } else {
+          button.style.background = "none";
+        }
+      })
+
     };
     selectTab(0);
-  }
     // my code above
   }
   asTabs(document.querySelector("#wrapper"));
